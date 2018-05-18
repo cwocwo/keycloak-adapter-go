@@ -26,7 +26,7 @@ func BasicAuthFilter(req *restful.Request, resp *restful.Response, chain *restfu
 }
 
 
-// basic auth Filter
+// token auth Filter
 func TokenAuthFilter(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
 	log.Printf("[token-auth-filter (logger)] %s,%s\n", req.Request.Method, req.Request.URL)
 	if Config != nil {
@@ -38,7 +38,6 @@ func TokenAuthFilter(req *restful.Request, resp *restful.Response, chain *restfu
 				req.SetAttribute(UserVar, keycloakJWT.GetUsername())
 				req.SetAttribute(RoleVar, roles)
 
-
 				log.Printf("[token-auth-filter (logger)] %s,%s\n", keycloakJWT.GetUsername(), roles)
 			} else {
 				log.Printf("[token-auth-filter (logger)] %s\n", err)
@@ -47,11 +46,4 @@ func TokenAuthFilter(req *restful.Request, resp *restful.Response, chain *restfu
 	}
 
 	chain.ProcessFilter(req, resp)
-}
-
-func loadConfig() {
-	//config, err := ioutil.ReadFile("./keycloak-config.json")
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
 }
